@@ -1,0 +1,42 @@
+# OnePlus TV (model D00), Android TV 11, firmware RTM1.210315.027
+# Same D00 model as examples/oneplus-tv-dubai/ but on the older Android 11 firmware with the Android TV
+# (not Google TV) home screen. Live TV app: com.heytap.tv.livetv. Stock launcher: com.google.android.tvlauncher.
+#
+# Apply:   TV_HOST=<tv ip> tools/disable.sh examples/oneplus-tv-d00-android11/debloat.txt
+# Undo:    TV_HOST=<tv ip> tools/restore.sh examples/oneplus-tv-d00-android11/debloat.txt
+# Everything is DISABLED, not uninstalled. Comment out any line you want to keep.
+#
+# Kept on purpose: Google Assistant (com.google.android.katniss), Play Store and Play services, the
+# streaming apps, the factory apps (com.heytap.optvfactory, com.oneplus.tv.factory), the HDMI/tuner
+# input services (com.mediatek.tvinput, com.mediatek.tv.service) and the Live TV app.
+# Sideloading works on this firmware, including an APK that declares the HOME category.
+# With the stock launcher disabled, com.android.tv.settings keeps a FallbackHome as a safety net.
+# Seen here: the injected KEYCODE_HOME does not leave Live TV while an HDMI port has no signal
+# (the physical Home button does); `am start -a android.intent.action.MAIN -c android.intent.category.HOME` does.
+# An HDMI input left without signal puts the TV to sleep after a while; wake it with the remote.
+# Tried for one day, one unit; nothing broke, nothing had to be re-enabled.
+
+# Google telemetry and one-time setup leftovers
+com.google.android.feedback
+com.google.android.onetimeinitializer
+
+# Ambient mode
+com.google.android.backdrop
+
+# OnePlus / HeyTap diagnostics and test apps
+com.heytap.tv.remotecontrolinspect     # remote control inspection
+com.heytap.tv.remotediagnosing         # remote diagnosing
+com.mediatek.androidbox                # Wi-Fi Display sink test app
+
+# OnePlus / HeyTap extras
+oneplus.smarthome                      # OnePlus smart home control
+com.heytap.tv.assistant.oneplus        # "TV Manager" cleaner app
+
+# Casting, mirroring and remote updates, off by choice (re-enable if you use them)
+com.google.android.apps.mediashell     # Chromecast built-in
+com.heytap.optvmiracastservice         # Miracast
+com.heytap.oprcupgradeservice          # remote control firmware updates
+
+# Stock launcher and its recommendation service, replaced by launcher/
+com.google.android.tvlauncher
+com.google.android.tvrecommendations
